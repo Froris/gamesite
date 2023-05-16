@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Box, Typography } from '@mui/material';
+import { Box, Container, Typography, useMediaQuery } from '@mui/material';
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
-import errorimg from '../assets/errorimg.jpg';
-import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
+import errorbg from '../assets/errorbg.png';
+import { appPalette } from '../theme';
 
 export const ErrorBoundary = () => {
+  const isTabletScreen = useMediaQuery('(max-width: 870px)');
+  const isSmallScreen = useMediaQuery('(max-width: 500px)');
+  const colors = appPalette();
+
   const error = useRouteError();
   console.error('Router Error: ', error);
 
@@ -13,53 +17,86 @@ export const ErrorBoundary = () => {
       width='100vw'
       height='100vh'
       display='flex'
-      flexDirection='column'
-      justifyContent='center'
+      flexDirection={isTabletScreen ? 'column' : 'row'}
       alignItems='center'
-      gap={3}
+      justifyContent={isTabletScreen ? 'center' : 'flex-end'}
       sx={{
-        color: '#191919',
-        background: `no-repeat 90%/70% url(${errorimg}) `,
+        backgroundColor: colors.main?.white,
+        color: colors.main?.dark,
       }}
     >
-      {isRouteErrorResponse(error) ? (
-        <>
-          <Typography variant='h2' component={'p'}>
-            Oops, something went wrong...
-          </Typography>
-          <Typography variant='h2' component={'p'}>
-            {error.status}
-          </Typography>
-          <Typography variant='h3' component={'p'}>
-            {error.statusText
-              ? error.statusText
-              : 'The requested page crashed. Please try again later.'}
-          </Typography>
-          <Typography variant='h4' component={'p'}>
-            {error.data?.message && error.data.message}
-          </Typography>
-        </>
-      ) : (
-        <>
-          <Typography variant='h3' component={'p'}>
-            Oops, something went wrong...
-          </Typography>
-          <Typography variant='h4' component={'p'}>
-            The requested page crashed. Please try again later.
-          </Typography>
-        </>
-      )}
-      <Link to='/' className='btn__gohome'>
-        <Box display='flex' alignItems='center'>
-          <KeyboardDoubleArrowLeftRoundedIcon
-            color='primary'
-            fontSize='large'
-          />
-          <Typography variant='h5' component='span' color='#c72c41'>
-            go home
-          </Typography>
-        </Box>
-      </Link>
+      <Box
+        width={isTabletScreen ? '90%' : '40%'}
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+        alignItems='flex-start'
+        rowGap={2}
+      >
+        {isRouteErrorResponse(error) ? (
+          <>
+            <Typography variant='h2' component={'p'}>
+              Oops, something went wrong...
+            </Typography>
+            <Typography variant='h1' component={'p'}>
+              {error.status}
+            </Typography>
+            <Typography variant='h3' component={'p'}>
+              {error.statusText
+                ? error.statusText
+                : 'The requested page crashed. Please try again later.'}
+            </Typography>
+            <Typography variant='h4' component={'p'}>
+              {error.data?.message && error.data.message}
+            </Typography>
+          </>
+        ) : (
+          <>
+            <Typography variant='h3' component={'p'}>
+              Oops, something went wrong...
+            </Typography>
+            <Typography variant='h4' component={'p'}>
+              The requested page crashed. Please try again later.
+            </Typography>
+          </>
+        )}
+        <Link to='/'>
+          <Box
+            sx={{
+              minWidth: '150px',
+              maxWidth: '200px',
+              height: '50px',
+              borderRadius: '8px',
+              backgroundColor: colors.main?.orange,
+              '&:hover': {
+                backgroundColor: colors.secondary?.darkOrange,
+              },
+            }}
+            display='flex'
+            alignItems='center'
+          >
+            <Typography
+              width='100%'
+              textAlign='center'
+              variant='h4'
+              component='span'
+              color='white'
+            >
+              GO BACK
+            </Typography>
+          </Box>
+        </Link>
+      </Box>
+      <Box
+        width={isSmallScreen ? '90%' : '50%'}
+        height={isTabletScreen ? '60vh' : '100vh'}
+        sx={{
+          backgroundImage: `url(${errorbg})`,
+          backgroundPosition: '50%',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: isTabletScreen ? '100%' : '70%',
+        }}
+      />
     </Box>
   );
 };

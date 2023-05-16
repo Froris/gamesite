@@ -4,121 +4,37 @@ import { useState, useMemo } from 'react';
 
 type colorsMode = 'light' | 'dark';
 
-export const appPalette = (mode: colorsMode) => ({
+export const appPalette = (mode: colorsMode = 'dark') => ({
   ...(mode === 'dark'
     ? {
-        primary: {
-          100: '#f4d5d9',
-          200: '#e9abb3',
-          300: '#dd808d',
-          400: '#d25667',
-          500: '#c72c41',
-          600: '#9f2334',
-          700: '#771a27',
-          800: '#50121a',
-          900: '#28090d',
+        main: {
+          white: '#fff',
+          orange: '#F2994A',
+          dark: '#0E1621',
+          titleGradient:
+            'linear-gradient(180deg, rgba(255,139,37,1) 0%, rgba(255,93,49,1) 50%)',
+          iconsGradient2:
+            'linear-gradient(0deg, rgba(252,197,71,1) 0%, rgba(225,53,41,1) 50%)',
+          sliderBtnGradient:
+            'linear-gradient(180deg, rgba(255,139,37,1) 0%,rgba(225,53,41,1) 60%)',
+          errorPageBg: '#EDC5C6',
         },
         secondary: {
-          100: '#fff',
-          200: '#a3a3a3',
-          300: '#757575',
-          400: '#474747',
-          500: '#191919',
-          600: '#141414',
-        },
-        primaryAccent: {
-          100: '#fcdad9',
-          200: '#f8b5b3',
-          300: '#f58f8c',
-          400: '#f16a66',
-          500: '#ee4540',
-          600: '#be3733',
-          700: '#8f2926',
-          800: '#5f1c1a',
-          900: '#300e0d',
-        },
-        grey: {
-          100: '#e0e0e0',
-          200: '#c2c2c2',
-          300: '#a3a3a3',
-          400: '#858585',
-          500: '#666666',
-          600: '#525252',
-          700: '#3d3d3d',
-          800: '#292929',
-          900: '#141414',
+          blue: '#5865F2',
+          orange: '#FFB47E',
+          darkOrange: '#FF7E0D',
+          gray: '#D1CBD0',
+          breadсrumbsGray: '#616063',
+          rolesGray: '#8d8d8e',
+          darkGray: '#3A383C',
         },
       }
-    : {
-        primary: {
-          100: '#28090d',
-          200: '#50121a',
-          300: '#771a27',
-          400: '#9f2334',
-          500: '#c72c41',
-          600: '#d25667',
-          700: '#dd808d',
-          800: '#e9abb3',
-          900: '#f4d5d9',
-        },
-        secondary: {
-          100: '#141414',
-          200: '#191919',
-          300: '#474747',
-          400: '#757575',
-          500: '#fff',
-          600: '#a3a3a3',
-        },
-        primaryAccent: {
-          100: '#300e0d',
-          200: '#5f1c1a',
-          300: '#8f2926',
-          400: '#be3733',
-          500: '#ee4540',
-          600: '#f16a66',
-          700: '#f58f8c',
-          800: '#f8b5b3',
-          900: '#fcdad9',
-        },
-        grey: {
-          100: '#141414',
-          200: '#292929',
-          300: '#3d3d3d',
-          400: '#525252',
-          500: '#666666',
-          600: '#858585',
-          700: '#a3a3a3',
-          800: '#c2c2c2',
-          900: '#e0e0e0',
-        },
-      }),
-
-  warning: {
-    100: '#fee5ce',
-    200: '#fdcb9d',
-    300: '#fcb16b',
-    400: '#fb973a',
-    500: '#fa7d09',
-    600: '#c86407',
-    700: '#964b05',
-    800: '#643204',
-    900: '#321902',
-  },
-  success: {
-    100: '#f2fee9',
-    200: '#e5fdd3',
-    300: '#d8fbbe',
-    400: '#cbfaa8',
-    500: '#bef992',
-    600: '#98c775',
-    700: '#729558',
-    800: '#4c643a',
-    900: '#26321d',
-  },
+    : {}),
 });
 
 // mui theme settings
-export const themeSettings = (mode: colorsMode) => {
+// for possible "light mode"
+export const themeSettings = (mode: colorsMode = 'dark') => {
   const colors = appPalette(mode);
 
   return {
@@ -127,65 +43,87 @@ export const themeSettings = (mode: colorsMode) => {
       ...(mode === 'dark'
         ? {
             primary: {
-              main: colors.primary[500],
-              light: colors.primary[400],
-              dark: colors.primary[700],
-              contrastText: colors.secondary[600],
+              main: colors.main!.orange,
+              dark: colors.secondary?.darkOrange,
+              contrastText: colors.main!.white,
             },
             secondary: {
-              main: colors.secondary[500],
+              main: colors.secondary!.gray,
+              contrastText: colors.main!.dark,
             },
-            neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
+            text: {
+              primary: colors.main?.white,
+              secondary: colors.secondary!.gray,
+              disabled: colors.secondary!.gray,
             },
             background: {
-              default: colors.secondary[500],
+              default: colors.main!.dark,
+            },
+            shape: {
+              borderRadius: 24,
             },
           }
-        : {
-            primary: {
-              main: colors.primary[500],
-              light: colors.primary[600],
-              dark: colors.primary[300],
-              contrastText: colors.grey[900],
-            },
-            secondary: {
-              main: colors.secondary[600],
-            },
-            neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
-            },
-            background: {
-              default: colors.secondary[500],
-            },
-          }),
+        : {}),
     },
     typography: {
-      fontSize: 12,
+      htmlFontSize: 16,
+      fontSize: 16,
+      fontFamily: "'Montserrat', sans-serif",
       h1: {
-        fontSize: 40,
+        fontSize: 60,
+        letterSpacing: '-4px',
+        fontWeight: '700',
+        background: colors.main!.titleGradient,
+        backgroundClip: 'text',
+        textFillColor: 'transparent',
       },
       h2: {
-        fontSize: 32,
+        fontSize: 40,
+        fontWeight: '700',
+        background: colors.main!.titleGradient,
+        backgroundClip: 'text',
+        textFillColor: 'transparent',
       },
-      h3: {
-        fontSize: 24,
+      subtitle1: {
+        fontWeight: 500,
+        fontSize: '2.4rem',
+        lineHeight: 1.3,
       },
-      h4: {
-        fontSize: 20,
+      subtitle2: {
+        fontWeight: 500,
+        fontSize: '2.2rem',
       },
-      h5: {
-        fontSize: 16,
+      body1: {
+        fontWeight: 500,
+        fontSize: '1.8rem',
+        lineHeight: 1.3,
       },
-      h6: {
-        fontSize: 14,
+      body2: {
+        fontWeight: 500,
+        fontSize: '1.6rem',
+        lineHeight: 1.3,
       },
     },
     spacing: 8,
+    components: {
+      MuiAppBar: {
+        styleOverrides: {
+          root: {
+            height: '100px',
+            backgroundColor: 'transparent',
+            backgroundImage: 'none',
+            boxShadow: 'none',
+          },
+        },
+      },
+      MuiBox: {
+        styleOverrides: {
+          root: {
+            backgroundColor: 'transparent',
+          },
+        },
+      },
+    },
   };
 };
 

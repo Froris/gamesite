@@ -5,22 +5,16 @@ import { Root } from './pages/Root';
 import './index.css';
 import { Home } from './pages/Home';
 import { ErrorBoundary } from './pages/ErrorBoundary';
-import { Events } from './pages/Events';
-import { TestForm } from './pages/TestForm';
-import { initFacebookSdk } from './services';
+import { News } from './pages/News';
+import { Login } from './pages/Login';
+import { AboutUs } from './pages/AboutUs';
+import { Contacts } from './pages/Contacts';
 
-// wait for facebook sdk before startup
-initFacebookSdk()
-  .then(startApp)
-  .catch((err) => console.error(err));
-
-function startApp() {
-  createRoot(document.getElementById('root') as HTMLElement).render(
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>
-  );
-}
+export const pages = [
+  { pageName: 'News', path: 'news' },
+  { pageName: 'About us', path: 'about' },
+  { pageName: 'Contacts', path: 'contacts' },
+];
 
 const router = createBrowserRouter([
   {
@@ -29,18 +23,36 @@ const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       {
-        path: '/',
         index: true,
         element: <Home />,
       },
       {
-        path: '/events',
-        element: <Events />,
+        path: 'news',
+        element: <News />,
       },
       {
-        path: '/contacts',
-        element: <TestForm />,
+        path: 'about',
+        element: <AboutUs />,
+      },
+      {
+        path: 'contacts',
+        element: <Contacts />,
       },
     ],
   },
+  // FixMe: For testing. Delete after
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/err',
+    element: <ErrorBoundary />,
+  },
 ]);
+
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
+);
